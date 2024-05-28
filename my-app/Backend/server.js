@@ -31,20 +31,6 @@ db.connect((err) => {
   console.log("Connected to the database");
 });
 
-// if (db.state === "disconnected") {
-//   db.connect((err) => {
-//     if (err) {
-//       console.error(
-//         "Error connecting to the database:",
-//         err.message,
-//         err.stack
-//       );
-//       return;
-//     }
-//     console.log("Connected to the database");
-//   });
-// }
-
 app.post("/signup", async (req, res) => {
   console.log("Received signup request:", req.body);
 
@@ -64,10 +50,6 @@ app.post("/signup", async (req, res) => {
         return res
           .status(500)
           .json({ error: `Server Side Error: ${err.message}` });
-
-        // return res
-        //   .status(500)
-        //   .json({ error: `Server Side Error: ${err.message}` });
       }
       console.log("User inserted successfully");
       return res
@@ -92,9 +74,7 @@ app.post("/login", (req, res) => {
   db.query(sql, [email], async (err, data) => {
     if (err) {
       console.error("Error querying user:", err.message, err.stack);
-      return res
-        .status(500)
-        .json({ error: `Server Side Error: ${err.message}` });
+      return res.status(500).json({ error: `Server Side Error: ${err.message}` });
     }
     if (data.length > 0) {
       const user = data[0];
@@ -102,11 +82,9 @@ app.post("/login", (req, res) => {
 
       if (isPasswordValid) {
         const name = user.email;
-        const token = jwt.sign({ name }, process.env.JWT_SECRET, {
-          expiresIn: "1d",
-        });
+        const token = jwt.sign({ name }, process.env.JWT_SECRET, { expiresIn: "1d" });
         res.cookie("token", token, { httpOnly: true });
-        return res.json({ status: "success", Message: "Login successful" });
+        return res.json({ status: "success", message: "Login successful", token });
       } else {
         return res.status(401).json({ error: "Password is incorrect" });
       }
@@ -116,6 +94,44 @@ app.post("/login", (req, res) => {
   });
 });
 
+//////////////////
+
+// app.post("/login", (req, res) => {
+//   console.log("Received login request:", req.body);
+//   const { email, password } = req.body;
+//   if (!email || !password) {
+//     console.error("Validation error: Email and password are required");
+//     return res.status(400).json({ error: "Email and password are required" });
+//   }
+
+//   const sql = "SELECT * FROM users WHERE email = ?";
+//   db.query(sql, [email], async (err, data) => {
+//     if (err) {
+//       console.error("Error querying user:", err.message, err.stack);
+//       return res
+//         .status(500)
+//         .json({ error: `Server Side Error: ${err.message}` });
+//     }
+//     if (data.length > 0) {
+//       const user = data[0];
+//       const isPasswordValid = await bcrypt.compare(password, user.password);
+
+//       if (isPasswordValid) {
+//         const name = user.email;
+//         const token = jwt.sign({ name }, process.env.JWT_SECRET, {
+//           expiresIn: "1d",
+//         });
+//         res.cookie("token", token, { httpOnly: true });
+//         return res.json({ status: "success", Message: "Login successful" });
+//       } else {
+//         return res.status(401).json({ error: "Password is incorrect" });
+//       }
+//     } else {
+//       return res.status(404).json({ error: "Email not found" });
+//     }
+//   });
+// });
+/////////////////
 app.get("/ping", (req, res) => {
   res.json({ message: "pong" });
 });
