@@ -22,7 +22,7 @@ app.use(
   })
 );
 
-// Establish connection with db (if not using db.js)
+
 db.connect((err) => {
   if (err) {
     console.error("Error connecting to the database:", err.message, err.stack);
