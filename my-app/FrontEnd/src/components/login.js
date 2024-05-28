@@ -1,11 +1,12 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-// import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   axios.defaults.withCredentials = true;
 
@@ -15,19 +16,21 @@ const Login = () => {
     try {
       const res = await axios.post("http://localhost:5001/login", values);
       console.log("Response:", res); // Log the entire response
-      if (res.data.Status === "Success") {
-        alert("Congrats, you are now logged in!"); // Show success message
+
+      if (res.data.status === "success") { // Check the correct field
+        alert("Congrats, you are now logged in!");
+        sessionStorage.setItem("userToken", res.data.token);
+        navigate("/dashboard");
       } else {
-        alert(res.data.Message);
+        setErrorMessage(res.data.error || "Login failed. Please try again.");
       }
     } catch (err) {
-      console.error("Error during login:", err);
       if (err.response) {
-        console.log("Error response:", err.response); // Log error response
-        alert(err.response.data.Message || "An error occurred during login");
+        setErrorMessage(err.response.data.error || "Login failed. Please try again.");
       } else {
-        alert("An error occurred during login");
+        setErrorMessage("Login failed. Please try again.");
       }
+      console.error("Error during login", err);
     }
   };
 
@@ -50,6 +53,7 @@ const Login = () => {
           required
         />
         <button type="submit">Login</button>
+        {errorMessage && <p>{errorMessage}</p>}
       </form>
     </div>
   );
@@ -57,18 +61,42 @@ const Login = () => {
 
 export default Login;
 
-//call back-end /server side API with Axios HTTP request library
-//     axios
-//       .post("http://localhost:5001/login", values)
-//       //then get the response from the server side
-//       .then((res) => {
-//         if (res.data.Status === "Success") {
-//           navigate("/");
-//         } else {
-//           alert(res.data.Message);
-//         }
-//       })
-//       .catch((err) => console.log(err));
+
+
+
+
+// import { useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import axios from "axios";
+
+// const Login = () => {
+//   const [email, setEmail] = useState("");
+//   const [password, setPassword] = useState("");
+//   const [errorMessage, setErrorMessage] = useState("");
+//   const navigate = useNavigate();
+
+//   axios.defaults.withCredentials = true;
+
+//   const handleLogin = async (e) => {
+//     e.preventDefault();
+//     const values = { email, password };
+//     try {
+//       const res = await axios.post("http://localhost:5001/login", values);
+//       console.log("Response:", res); // Log the entire response
+
+//       if (res.data.Status === "Success") {
+//         alert("Congrats, you are now logged in!");
+
+//         sessionStorage.setItem("userToken", res.data.token);
+//         navigate("/dashboard");
+//         // history.push("/dashboard");
+//       } else {
+//         setErrorMessage("Login failed. Please try again.");
+//       }
+//     } catch (err) {
+//       setErrorMessage("Login failed. Please try again.");
+//       console.error("Error during login", err);
+//     }
 //   };
 
 //   return (
@@ -82,7 +110,6 @@ export default Login;
 //           onChange={(e) => setEmail(e.target.value)}
 //           required
 //         />
-
 //         <input
 //           type="password"
 //           placeholder="password"
@@ -92,6 +119,7 @@ export default Login;
 //         />
 
 //         <button type="submit">Login</button>
+//         {errorMessage && <p>{errorMessage}</p>}
 //       </form>
 //     </div>
 //   );
