@@ -90,9 +90,11 @@ my-app/
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
+
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. See the [LICENSE](my-app/License.txt) file for details.
+
 
 MIT License
 
