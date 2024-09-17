@@ -1,6 +1,6 @@
 # Register :pencil2: :leaves:
 
-I started coding this as a full-stack web application that provides user authentication functionality. 
+I started coding this as a full-stack web application to provide user authentication functionality. 
 This project consists of a React frontend and a Node.js backend with Express, using MySQL for data storage.\
 This project is not a build. It just consists of parts I later reworked, beginning with Create React App. I used it as a stepping stone to my later project. 
 
