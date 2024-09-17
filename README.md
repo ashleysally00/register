@@ -1,6 +1,9 @@
 # Register
 
-Register is a full-stack web application that provides user authentication functionality. It consists of a React frontend and a Node.js backend with Express, using MySQL for data storage.
+I started coding this as a full-stack web application that provides user authentication functionality. 
+This project consists of a React frontend and a Node.js backend with Express, using MySQL for data storage.\
+I5 is not a build in that it just consists of parts that I later reworked again, starting with Create React App. 
+
 
 ## Project Structure
 
