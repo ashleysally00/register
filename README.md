@@ -1,8 +1,8 @@
-# Register
+# Register :pencil2: :leaves:
 
 I started coding this as a full-stack web application that provides user authentication functionality. 
 This project consists of a React frontend and a Node.js backend with Express, using MySQL for data storage.\
-I5 is not a build in that it just consists of parts that I later reworked again, starting with Create React App. 
+This project is not a build. It just consists of parts I later reworked, beginning with Create React App. I used it as a stepping stone to my later project. 
 
 
 ## Project Structure
